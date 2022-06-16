@@ -10,13 +10,17 @@ Section A
 	and int (for rendering, since all pixel coordinates are integers)
 	> implement matrix operations
 
-1) Class Image:
+1) Class Canvas:
 	> size, backgroung color, origin point and scale value (initializing the coordinate system)
-	> vector of Graphic Objects
+	> 2D-vector of pixels (+struct pixel is needed)
+	> final stage before output into png-picture
 
 2) Class Graphic Object (grObj):
 	> a common template for any object containing its parameters like pivots, radius, color, thickness or whatever is required
 	> circle (as a curve and as a shape), polygon, line, polyline, curve, spline, gradieng, fill (may be some others will be implemented later)
+
+	> objects will be combined in another structure: Set of objects (objSet), storing information about their order on layers 
+	> objSet  may be drawn on Image, not directly to png
 
 3) Renderer
 	> I think the drawing procedure
@@ -26,12 +30,12 @@ Section A
 The structure of the project:
 		____________________________...
 	       /____________
-	      /___	   image processing				 ___
-	     /	  filters	 _________				  __\
-	    /			/         drawing algorithms (render)	     \
-	grlib <-- Image <-- grObj					 <--- pov (is used everywhere)
-				\__circle				   __/
-				 \________polygon			  __/
+	      /___	   image processing algorithms (to apply to canvas)    ___
+	     /	  filters	 _________				  	__\
+	    /			/         drawing algorithms (render)	     	   \
+	grlib <------------- grObj (+objSet)			<--- pov & canvas (used everywhere)
+				\__circle				   	__/
+				 \________polygon			       __/
 				  \_______________...
 
 
