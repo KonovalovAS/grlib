@@ -33,7 +33,7 @@ The structure of the project:
 	      /___	   image processing algorithms (to apply to canvas)    ___
 	     /	  filters	 _________				  	__\
 	    /			/         drawing algorithms (render)	     	   \
-	grlib <------------- grObj (+objSet)			<--- pov & canvas (used everywhere)
+	grlib <------------- grObj (+objSet)			<--- pov & canvas (used everywhere)  <-- color (class)
 				\__circle				   	__/
 				 \________polygon			       __/
 				  \_______________...

@@ -7,8 +7,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../stb/stb_image_write.h"
 
+#include <iostream>
 
-Canvas::Canvas(int H_, int W_, int C_){
+Canvas::Canvas(int H_, int W_, int C_, color COL ){
 	H = H_;
 	W = W_;
 	C = C_;
@@ -16,7 +17,21 @@ Canvas::Canvas(int H_, int W_, int C_){
 	_canvas = vector<matr_i> (C,
 				  vector<v_i> (H, 
 					       vector<int> (W,255) ) );
+	dye_all( COL );
 }
+
+Canvas::Canvas(int H_, int W_, int C_, Color_name COLNAME ){
+	H = H_;
+	W = W_;
+	C = C_;
+
+	_canvas = vector<matr_i> (C,
+				  vector<v_i> (H, 
+					       vector<int> (W,255) ) );
+	color COL( COLNAME );
+	dye_all( COL );
+}
+
 
 Canvas::Canvas(string read_img_name,const int channels){
 	unsigned char * data = stbi_load(read_img_name.c_str(),&W,&H,&C,channels);
@@ -25,6 +40,44 @@ Canvas::Canvas(string read_img_name,const int channels){
 					       vector<int> (W,255) ) );
 	convert_char_2_vmatri(data);
 }
+
+
+
+void Canvas::dye_all( color COL ){
+	
+	for(int i=0; i<H; i++)
+		for(int j=0; j<W; j++){
+			switch( C ){
+			case 1:
+				_canvas[0][i][j] = round( (double)( COL.r + COL.g + COL.b )/3 );
+				break;
+			case 2:
+
+				_canvas[0][i][j] = round( (double)( COL.r + COL.g + COL.b )/3 );
+				_canvas[1][i][j] = COL.alpha;
+				break;
+			case 3:
+				_canvas[0][i][j] = COL.r; 
+				_canvas[1][i][j] = COL.g; 
+				_canvas[2][i][j] = COL.b; 
+				break;
+			case 4: 
+				_canvas[0][i][j] = COL.r; 
+				_canvas[1][i][j] = COL.g; 
+				_canvas[2][i][j] = COL.b;
+				_canvas[3][i][j] = COL.alpha;
+				break;
+			}
+		}
+}
+
+
+
+
+
+
+
+
 
 void Canvas::convert_char_2_vmatri(const unsigned char * data){
 	try{
@@ -38,17 +91,6 @@ void Canvas::convert_char_2_vmatri(const unsigned char * data){
 	}
 }
 
-/*
-// Copied from my old work as a reference:
-void Reading::Read_the_image(Vint& New_image, std::string filename){
-    int H,W,CHANNELS;
-    unsigned char *data = stbi_load(filename.c_str(),&W,&H,&CHANNELS,3);
-    Vint Image (H,vvint(W,vint(CHANNELS)));
-    convert_char_to_Vint( data, Image );
-    New_image = Image;
-}
-
-*/
 
 void Canvas::output(string filename){
 	char data[H*W*C];
