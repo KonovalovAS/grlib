@@ -23,7 +23,7 @@ public:
 	int H,W,C; // height, width, channels;
 	
 	Canvas(int W_=100, int H_=100, int C_=1);
-	Canvas(string& img_toread_name);
+	Canvas(string read_img_name, const int channels);
 
 	void output(string filename);
 };

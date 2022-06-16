@@ -18,9 +18,8 @@ Canvas::Canvas(int H_, int W_, int C_){
 					       vector<int> (W,255) ) );
 }
 
-Canvas::Canvas(string& filename){
-	int channels = 3;
-	unsigned char * data = stbi_load(filename.c_str(),&W,&H,&C,channels);
+Canvas::Canvas(string read_img_name,const int channels){
+	unsigned char * data = stbi_load(read_img_name.c_str(),&W,&H,&C,channels);
 	_canvas = vector<matr_i> (C,
 				  vector<v_i> (H,
 					       vector<int> (W,255) ) );
