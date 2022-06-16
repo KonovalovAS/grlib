@@ -1,8 +1,5 @@
 #include "../head/canvas.hpp"
 
-#include "../stb/stb_image.h"
-#include "../stb/stb_image_write.h"
-
 Canvas::Canvas(int H_, int W_, int C_){
 	H = H_;
 	W = W_;
