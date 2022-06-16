@@ -1,5 +1,13 @@
 #include "../head/canvas.hpp"
 
+#define STB_ONLY_PNG
+#define STB_IMAGE_IMPLEMENTATION
+#include "../stb/stb_image.h"
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "../stb/stb_image_write.h"
+
+
 Canvas::Canvas(int H_, int W_, int C_){
 	H = H_;
 	W = W_;
@@ -43,7 +51,7 @@ void Reading::Read_the_image(Vint& New_image, std::string filename){
 
 */
 
-void Canvas::output(string& filename){
+void Canvas::output(string filename){
 	char data[H*W*C];
 	convert_vmatri_2_char(data);
 	stbi_write_png(filename.c_str(),W,H,C,data,W*C);

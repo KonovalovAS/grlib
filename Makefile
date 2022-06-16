@@ -11,5 +11,6 @@ o/canvas.o: src/canvas.cpp
 	g++ -c src/canvas.cpp
 	mv canvas.o o
 
-clear:
-	rm *.o
+clean:
+	rm o/*.o
+
