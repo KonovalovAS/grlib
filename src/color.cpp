@@ -9,7 +9,7 @@ color::color( int R, int G, int B, int ALPHA ){
 
 color::color( Color_name colname, int ALPHA ){
 	get_rgb( colname, r,g,b );
-	alpha = ALPHA;
+	alpha = ALPHA%256;
 }
 
 void get_rgb( Color_name colname, int &R, int &G, int &B ){

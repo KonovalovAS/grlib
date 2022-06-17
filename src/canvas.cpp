@@ -42,6 +42,53 @@ Canvas::Canvas(string read_img_name,const int channels){
 }
 
 
+pov Canvas::crd_change( const pov& pt ){
+	return { pt.x, (H-1)-pt.y };
+
+}
+
+bool Canvas::pov_is_in( const pov& pt ){
+	return ( 0 <= pt.x ) && (pt.x <= W-1 )
+	    && ( 0 <= pt.y ) && (pt.y <= H-1 );
+}
+
+void Canvas::set_pixel(pov pt_, color COL){
+	
+	pov pt = crd_change( pt_ );
+	
+	if( pov_is_in( pt ) ){
+		try{
+			setting_pixel(pt,COL);
+		}
+		catch(...){
+			std::cout << "Couldn't set pixel (" << pt.x << "," << pt.y << ")\n";
+		}
+	}
+}
+
+void Canvas::setting_pixel(const pov& pt, color COL){
+	switch( C ){
+	case 1:
+		_canvas[0][pt.y][pt.x] = round( (double)( COL.r + COL.g + COL.b )/3 );
+		break;
+	case 2:
+		_canvas[0][pt.y][pt.x] = round( (double)( COL.r + COL.g + COL.b )/3 );
+		_canvas[1][pt.y][pt.x] = COL.alpha;
+		break;
+	case 3:
+		_canvas[0][pt.y][pt.x] = COL.r; 
+		_canvas[1][pt.y][pt.x] = COL.g; 
+		_canvas[2][pt.y][pt.x] = COL.b; 
+		break;
+	case 4: 
+		_canvas[0][pt.y][pt.x] = COL.r; 
+		_canvas[1][pt.y][pt.x] = COL.g; 
+		_canvas[2][pt.y][pt.x] = COL.b;
+		_canvas[3][pt.y][pt.x] = COL.alpha;
+		break;
+	}
+
+}
 
 void Canvas::dye_all( color COL ){
 	

@@ -2,6 +2,7 @@
 #define CANVAS_HPP_INCLUDED
 
 #include "color.hpp"
+#include "pov.hpp"
 
 #include <vector>
 #include <string>
@@ -20,6 +21,10 @@ private:
 
 	void convert_vmatri_2_char(char * data);
 	void convert_char_2_vmatri(const unsigned char * data);
+
+	bool pov_is_in( const pov& pt );
+	void setting_pixel(const pov& pt, color COL);
+	pov crd_change( const pov& pt );
 public:
 	int H,W,C; // height, width, channels;
 	
@@ -27,7 +32,9 @@ public:
 	Canvas(int W_, int H_, int C_, Color_name COLNAME = WHITE );
 	
 	Canvas(string read_img_name, const int channels);
-	
+
+
+	void set_pixel(pov pt, color COL);
 	void dye_all(color COL);
 
 	void output(string filename);
