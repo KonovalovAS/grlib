@@ -3,6 +3,8 @@
 
 #include "pov.hpp"
 
+// the approach which the following thing was written for won't be developed any soon,
+// so probably I will delete it in a commit or two
 enum Color_name{
 	BLACK,
 	WHITE,

@@ -1,31 +1,28 @@
-All is divided into 2 sections:
-A) how the data is being kept and processed
-B) how it is being displayed
-
-Section A
-
-0) Class pv (point or vector)
-	> might be a template, but I expect it to be used
-	mostly with double (for calculations)
-	and int (for rendering, since all pixel coordinates are integers)
+O) Class pv (point or vector)
 	> implement matrix operations
 
-1) Class Canvas:
-	> size, backgroung color, origin point and scale value (initializing the coordinate system)
-	> 2D-vector of pixels (+struct pixel is needed)
+O) struct color: just a compact keeper of R,G,B and alpha values
+
+O) Class Canvas:
+	> nothing but a 3D-vector of integers (the 1-st dimension: color channels, the 2-nd and the 3-rd: R-G-B-alpha values)
 	> final stage before output into png-picture
 
-2) Class Graphic Object (grObj):
+	> Canvas will may be interpreted as a layer: canvases could be added up in different order
+
+O) Class Graphic Object (grObj):
 	> a common template for any object containing its parameters like pivots, radius, color, thickness or whatever is required
 	> circle (as a curve and as a shape), polygon, line, polyline, curve, spline, gradieng, fill (may be some others will be implemented later)
+	
+	> I think the drawing procedure	will be individual special for each graphic object
 
+O) color_base:
+	> a ancestor-class for classes for different ways of coloring (const_color, gradients)
+
+O) Class Set of objects (objSet):
 	> objects will be combined in another structure: Set of objects (objSet), storing information about their order on layers 
 	> objSet  may be drawn on Image, not directly to png
 
-3) Renderer
-	> I think the drawing procedure
-	will be individual special for each graphic object
-
+	
 
 The structure of the project:
 		____________________________...

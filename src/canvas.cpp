@@ -156,3 +156,53 @@ void Canvas::convert_vmatri_2_char(char * data){
 		std::cout << "Something went wrong!";
 	}
 }
+
+bool operator == (const Canvas& left, const Canvas& right){
+	bool res = ( left.C == right.C ) &&
+		   ( left.H == right.H ) &&
+		   ( left.W == right.W );
+	if(res)
+		res = res && ( left._canvas == right._canvas );
+	return res;
+}
+
+Canvas& Canvas::operator = (const Canvas& right){
+	if( this == &right ){
+		return *this;
+	}
+	H = right.H;
+	W = right.W;
+	C = right.C;
+	_canvas = right._canvas;
+	return *this;
+}
+
+
+const Canvas operator + (const Canvas& left, const Canvas& right){
+	// Channels number: addition table
+	// in this case addition is NOT commutative
+	// (the second (horizontal) summand is meant to be the higher layer)
+	//	+	1	2	3	4
+	//	1	c	2	c	4
+	//	2	c	2	c	4
+	//	3	c	3	c	4
+	//	4	c	4	c	4
+	// mark c means that there is no need to calculate the sum:
+	// the result will be just a copy of the second summand
+
+	if ( (right.C)%2 == 1 ){
+		Canvas sum = right;
+		return sum;
+	}
+
+	int new_C = std::max( left.C, right.C );
+	
+	// TO DO
+	// think of an addition algorithm
+
+	
+	// temporary crap:
+	Canvas sum = right;
+	return sum;
+}
+//

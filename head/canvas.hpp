@@ -38,10 +38,14 @@ public:
 	void dye_all(color COL);
 
 	void output(string filename);
+
+	friend bool operator == (const Canvas& left, const Canvas& right);
+	Canvas& operator = (const Canvas& right);
+
+	friend const Canvas operator + (const Canvas& left, const Canvas& right);
+
 };
 
 	
-
-
 
 #endif
