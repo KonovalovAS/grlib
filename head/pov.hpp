@@ -1,3 +1,6 @@
+#ifndef POV_HPP_INCLUDED
+#define POV_HPP_INCLUDED
+
 // point or vector
 
 struct pov{
@@ -6,3 +9,4 @@ struct pov{
 	//pov(int x_=0,int y_=0);
 };
 
+#endif

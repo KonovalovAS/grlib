@@ -1,11 +1,15 @@
 all:  prog
 
-prog: o/main.o o/canvas.o o/color.o o/pov.o
-	g++ o/main.o o/canvas.o o/color.o o/pov.o -o prog
+prog: o/main.o o/grobj.o o/canvas.o o/color.o o/pov.o
+	g++ o/main.o o/grobj.o o/canvas.o o/color.o o/pov.o -o prog
 
 o/main.o: main.cpp
 	g++ -c main.cpp
 	mv main.o o
+
+o/grobj.o: src/grobj.cpp
+	g++ -c src/grobj.cpp
+	mv grobj.o o
 
 o/canvas.o: src/canvas.cpp
 	g++ -c src/canvas.cpp
