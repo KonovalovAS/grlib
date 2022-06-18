@@ -1,4 +1,25 @@
-O) Class pv (point or vector)
+To do:
+
+0) defining operators for main structures
+(in particular: canvas, color(s), grObj, pov)
+
+1) matrix operations with pov
+
+2) graphic objects
+	+ drawing algorithms
+
+3) coloring methods
+
+
+
+
+
+
+
+
+=======================
+
+O) Class pov (point or vector)
 	> implement matrix operations
 
 O) struct color: just a compact keeper of R,G,B and alpha values
@@ -18,10 +39,6 @@ O) Class Graphic Object (grObj):
 O) color_base:
 	> a ancestor-class for classes for different ways of coloring (const_color, gradients)
 
-O) Class Set of objects (objSet):
-	> objects will be combined in another structure: Set of objects (objSet), storing information about their order on layers 
-	> objSet  may be drawn on Image, not directly to png
-
 	
 
 The structure of the project:
@@ -30,7 +47,7 @@ The structure of the project:
 	      /___	   image processing algorithms (to apply to canvas)    ___
 	     /	  filters	 _________				  	__\
 	    /			/         drawing algorithms (render)	     	   \
-	grlib <------------- grObj (+objSet)			<--- pov & canvas (used everywhere)  <-- color (class)
+	grlib <------------- grObj 					<--- pov & canvas (used everywhere)  <-- color (class)
 				\__circle				   	__/
 				 \________polygon			       __/
 				  \_______________...

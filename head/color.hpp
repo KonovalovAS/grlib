@@ -3,20 +3,6 @@
 
 #include "pov.hpp"
 
-// the approach which the following thing was written for won't be developed any soon,
-// so probably I will delete it in a commit or two
-enum Color_name{
-	BLACK,
-	WHITE,
-	RED,
-	GREEN,
-	BLUE,
-};
-
-
-void get_rgb( Color_name colname, int &R, int &G, int &B );
-
-
 // just a single color:
 struct color{
 	int r,
@@ -25,8 +11,11 @@ struct color{
 	    alpha;
 
 	color( int R = 255, int G =255, int B = 255, int ALPHA = 255 );
-	color( Color_name colname, int ALPHA = 255 );
 
+	friend bool operator == (const color& left, const color& right);
+	color& operator = (const color& right);
+
+	int to_bw();
 
 };
 

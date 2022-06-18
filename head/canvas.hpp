@@ -11,31 +11,40 @@
 using std::vector;
 using std::string;
 
-typedef vector<int> v_i;
-typedef vector<v_i> matr_i;
+typedef vector<color> col_vec;
+typedef vector<col_vec> col_matr;
 
 class Canvas{
 private:
 
-	vector<matr_i> _canvas;
+	col_matr _canvas;
 
-	void convert_vmatri_2_char(char * data);
-	void convert_char_2_vmatri(const unsigned char * data);
+	void convert_colmatr_2_char(char * data);
+	
+	void conv_2char_1( char * data );
+	void conv_2char_2( char * data );
+	void conv_2char_3( char * data );
+	void conv_2char_4( char * data );
+
+	void convert_char_2_colmatr(const unsigned char * data);
+
+	void conv_2colmatr_1( const unsigned char * data );
+	void conv_2colmatr_2( const unsigned char * data );
+	void conv_2colmatr_3( const unsigned char * data );
+	void conv_2colmatr_4( const unsigned char * data );
 
 	bool pov_is_in( const pov& pt );
-	void setting_pixel(const pov& pt, color COL);
 	pov crd_change( const pov& pt );
 public:
 	int H,W,C; // height, width, channels;
 	
 	Canvas(int W_=100, int H_=100, int C_=1, color COL = {255,255,255,255} );
-	Canvas(int W_, int H_, int C_, Color_name COLNAME = WHITE );
 	
 	Canvas(string read_img_name, const int channels);
 
 
-	void set_pixel(pov pt, color COL);
-	void dye_all(color COL);
+	void set_pixel(pov pt, const color COL);
+	void dye_all(const color COL);
 
 	void output(string filename);
 

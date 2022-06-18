@@ -1,5 +1,7 @@
 #include "../head/color.hpp"
 
+#include <cmath>
+
 color::color( int R, int G, int B, int ALPHA ){
 	r = R%256;
 	g = G%256;
@@ -7,38 +9,24 @@ color::color( int R, int G, int B, int ALPHA ){
 	alpha = ALPHA%256;
 }
 
-color::color( Color_name colname, int ALPHA ){
-	get_rgb( colname, r,g,b );
-	alpha = ALPHA%256;
+bool operator == (const color& left, const color& right ){
+	return     (left.r == right.r)
+		&& (left.g == right.g)
+		&& (left.b == right.b )
+		&& (left.alpha == right.alpha);
 }
 
-void get_rgb( Color_name colname, int &R, int &G, int &B ){
-	switch( colname ){
-	case RED:
-		R = 255;
-		G = 0;
-		B = 0;
-		break;
-	case GREEN:
-		R = 0;
-		G = 255;
-		B = 0;
-		break;
-	case BLUE:
-		R = 0;
-		G = 0;
-		B = 255;
-		break;
-	case BLACK:
-		R = 0;
-		G = 0;
-		B = 0;
-		break;
-	case WHITE:
-		R = 255;
-		G = 255;
-		B = 255;
-		break;
+color& color::operator = (const color& right){
+	if( this == &right ){
+		return *this;
 	}
+	r = right.r;
+	g = right.g;
+	b = right.b;
+	alpha = right.alpha;
+	return *this;
 }
 
+int color::to_bw(){
+	return (int) round( (double)(r + g + b)/3 );
+}
