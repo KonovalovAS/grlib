@@ -15,8 +15,6 @@ int main(){
 			B.set_pixel( {200+x,200+y}, {0,0,255,200} );
 		}
 	
-	cout << "A & B are drawn" << endl;
-
 	Canvas C = A + B;
 	
 	A.output("folder/test1_a.png");
