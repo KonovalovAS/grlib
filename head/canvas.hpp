@@ -6,7 +6,6 @@
 
 #include <vector>
 #include <string>
-#include <cmath>
 
 using std::vector;
 using std::string;
@@ -40,9 +39,9 @@ public:
 	
 	Canvas(int W_=100, int H_=100, int C_=1, color COL = {255,255,255,255} );
 	
-	Canvas(string read_img_name, const int channels);
+	Canvas(string read_img_name, const int channels = 4);
 
-
+	color get_pixel(pov pt_);
 	void set_pixel(pov pt, const color COL);
 	void dye_all(const color COL);
 

@@ -24,5 +24,5 @@ $(o)/pov.o: src/pov.cpp
 	g++ -o $(o)/pov.o -c src/pov.cpp 
 
 clean:
-	rm o/*.o
+	rm $(o)/*.o
 

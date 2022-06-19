@@ -8,6 +8,7 @@
 #include "../stb/stb_image_write.h"
 
 #include <iostream>
+#include <cmath>
 
 // CONSTRUCTORS
 
@@ -22,9 +23,19 @@ Canvas::Canvas(int H_, int W_, int C_, color COL ){
 }
 
 Canvas::Canvas(string read_img_name,const int channels){
-	unsigned char * data = stbi_load(read_img_name.c_str(),&W,&H,&C,channels);
-	_canvas = col_matr( H, col_vec( W, {255,255,255,255} ) );
-	convert_char_2_colmatr(data);
+	try{
+		C = channels;
+		unsigned char * data = stbi_load(read_img_name.c_str(),&W,&H,&C,channels);	
+		_canvas = col_matr( H, col_vec( W, {255,255,255,255} ) );
+		convert_char_2_colmatr(data);
+		delete [] data;
+	}
+	catch(...){
+		std::cout << "Coludn't read!\n";
+		_canvas = { { {0,0,0,0} } };
+		H = 1; W = 1; C = 1;
+	}
+
 }
 
 // AUXILIARY
@@ -38,6 +49,23 @@ bool Canvas::pov_is_in( const pov& pt ){
 	return ( 0 <= pt.x ) && (pt.x <= W-1 )
 	    && ( 0 <= pt.y ) && (pt.y <= H-1 );
 }
+
+// GETTERS
+
+color Canvas::get_pixel(pov pt_){
+	
+	pov pt = crd_change( pt_ );
+	color ans;
+
+	if( pov_is_in( pt ) ){
+		ans = _canvas[pt.y][pt.x];
+	}
+	else{
+		ans = {0,0,0,255};
+	}
+	return ans;
+}
+
 
 // SETTERS
 
@@ -192,9 +220,15 @@ void Canvas::conv_2char_4( char * data ){
 // OUTPUT
 
 void Canvas::output(string filename){
-	char data[H*W*C];
-	convert_colmatr_2_char(data);
-	stbi_write_png(filename.c_str(),W,H,C,data,W*C);
+	try{
+		char * data = new char[H*W*C];
+		convert_colmatr_2_char(data);
+		stbi_write_png(filename.c_str(),W,H,C,data,W*C);
+		delete [] data;
+	}
+	catch(...){
+		std::cout << "Failed to make an output (file " << filename << "\n";
+	}
 }
 
 
@@ -232,19 +266,20 @@ const Canvas operator + (const Canvas& left, const Canvas& right){
 	// mark c means that there is no need to calculate the sum:
 	// the result will be just a copy of the second summand
 
-	if ( (right.C)%2 == 1 ){
+	// if canvases have different size
+	// the function will return the second one as well
+	if ( ((right.C)%2 == 1) || (left.H != right.H) || (left.W != right.W) ){
 		Canvas sum = right;
 		return sum;
 	}
 
 	int new_C = std::max( left.C, right.C );
 	
-	// TO DO
-	// think of an addition algorithm
+	Canvas sum( left.H, left.W, new_C );
+	for(int x=0; x<left.W; x++)
+		for(int y=0; y<left.H; y++)
+			sum._canvas[y][x] = left._canvas[y][x] + right._canvas[y][x];
 
-	
-	// temporary crap:
-	Canvas sum = right;
 	return sum;
 }
 //

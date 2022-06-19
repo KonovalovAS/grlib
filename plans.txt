@@ -3,6 +3,8 @@ To do:
 0) defining operators for main structures
 (in particular: canvas, color(s), grObj, pov)
 
+not finished: operator + for colors
+
 1) matrix operations with pov
 
 2) graphic objects

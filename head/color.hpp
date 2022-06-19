@@ -12,6 +12,7 @@ struct color{
 
 	color( int R = 255, int G =255, int B = 255, int ALPHA = 255 );
 
+	friend color operator + (const color& left, const color& right); 
 	friend bool operator == (const color& left, const color& right);
 	color& operator = (const color& right);
 
@@ -19,6 +20,9 @@ struct color{
 
 };
 
+////////////////////////////
+// COLORING CLASSES
+////////////////////////////
 
 /// The ancestor of different types of coloring: 
 class color_base{
