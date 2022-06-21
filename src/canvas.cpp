@@ -92,6 +92,47 @@ void Canvas::dye_all( const color COL ){
 	}
 }
 
+void Canvas::to_bw(){
+	for(int y=0; y<H; y++)
+		for(int x=0; x<W; x++){
+			int gray = _canvas[y][x].to_bw();
+			_canvas[y][x].to_bw();
+		}
+}
+
+// not the optimal silution, but still:
+bool Canvas::channels_reconstr( int new_C ){
+
+	if( (new_C<1) || (new_C>4) ){
+		std::cout << "Unavailable number of channels for reconstruction!\n";
+		return false;
+	}
+	else{
+		C = new_C;
+		if( new_C == C )
+			return true;
+		
+		for(int j=0; j<W; j++)
+			for(int i=0; i<H; i++){
+				int bw = _canvas[i][j].to_bw();
+				switch( new_C ){
+				case 1:
+					_canvas[i][j].mk_bw();
+					_canvas[i][j].alpha = 255;
+					break;
+				case 2:
+					_canvas[i][j].mk_bw();
+					break;
+				case 3:
+					_canvas[i][j].alpha = 255;
+					break;
+				}
+			}
+	}
+
+	return true;
+}
+
 // AUXILIARY CONVERTATION
 
 void Canvas::convert_char_2_colmatr(const unsigned char * data){
@@ -157,6 +198,7 @@ void Canvas::conv_2colmatr_4( const unsigned char * data ){
 
 
 void Canvas::convert_colmatr_2_char(char * data){
+	
 	try{
 		switch( C ){
 			
@@ -174,8 +216,8 @@ void Canvas::convert_colmatr_2_char(char * data){
 			break;
 		}
 	}
-	catch(...){
-		std::cout << "Couldn't convert color-matrix to char*!";
+	catch( ... ){
+		std::cout << "Couldn't convert color-matrix to char*!\n";
 	}
 }
 
@@ -219,15 +261,28 @@ void Canvas::conv_2char_4( char * data ){
 
 // OUTPUT
 
-void Canvas::output(string filename){
-	try{
-		char * data = new char[H*W*C];
-		convert_colmatr_2_char(data);
-		stbi_write_png(filename.c_str(),W,H,C,data,W*C);
-		delete [] data;
+void Canvas::output(string filename, int channels){
+	
+	channels = (channels>0) ? channels : C;
+	
+	if( channels != C ){
+		Canvas TMP = *this;
+		
+		std::cout << "C!=channels" << std::endl;
+		TMP.channels_reconstr(channels);
+		TMP.output(filename,channels);
 	}
-	catch(...){
-		std::cout << "Failed to make an output (file " << filename << "\n";
+	else{
+
+		try{
+			char * data = new char[H*W*C];
+			convert_colmatr_2_char(data);
+			stbi_write_png(filename.c_str(),W,H,C,data,W*C);
+			delete [] data;
+		}
+		catch(...){
+			std::cout << "Failed to make an output (file " << filename << "\n";
+		}
 	}
 }
 

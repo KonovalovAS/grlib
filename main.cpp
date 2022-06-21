@@ -6,21 +6,16 @@ using std::endl;
 
 int main(){
 
-	Canvas A(500,500,4,{255,255,255,0});
-	Canvas B(500,500,4,{255,255,255,0});
-	
-	for(int y=0; y<200; y++)
-		for(int x=0; x<200; x++){
-			A.set_pixel( {100+x,100+y}, {255,0,0,200} );
-			B.set_pixel( {200+x,200+y}, {0,0,255,200} );
-		}
-	
-	Canvas C = A + B;
-	
-	A.output("folder/test1_a.png");
-	B.output("folder/test1_b.png");
+	Canvas A("folder/noise_before.png",3);
+	cout << "The image is read!" << endl;
 
-	C.output("folder/test1_c_equal_a_plus_b.png");
+	Noise_eliminator NE(8.0f,0.2f,10.0f);
+	cout << "Noise eliminator is constructed!" << endl;
+	NE(A);
+	cout << "Noise is eliminated!" << endl;
+
+	A.output("folder/noise_after.png",3);
+
 
 	return 0;
 }

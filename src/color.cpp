@@ -58,3 +58,10 @@ color& color::operator = (const color& right){
 int color::to_bw(){
 	return (int) round( (double)(r + g + b)/3 );
 }
+
+void color::mk_bw(){
+	int bw = this->to_bw();
+	r = bw;
+	g = bw;
+	b = bw;
+}

@@ -44,14 +44,16 @@ public:
 	color get_pixel(pov pt_);
 	void set_pixel(pov pt, const color COL);
 	void dye_all(const color COL);
+	void to_bw();
 
-	void output(string filename);
+	void output(string filename, int channels = -1);
 
 	friend bool operator == (const Canvas& left, const Canvas& right);
 	Canvas& operator = (const Canvas& right);
 
 	friend const Canvas operator + (const Canvas& left, const Canvas& right);
 
+	bool channels_reconstr( int new_C );
 };
 
 	

@@ -17,6 +17,7 @@ struct color{
 	color& operator = (const color& right);
 
 	int to_bw();
+	void mk_bw();
 
 };
 
