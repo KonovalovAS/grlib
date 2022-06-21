@@ -17,7 +17,7 @@ Canvas::Canvas(int H_, int W_, int C_, color COL ){
 	W = W_;
 	C = C_;
 
-	_canvas = col_matr( H, col_vec( W, COL ) );
+	_canvas = color_matr( H, color_vec( W, COL ) );
 
 	dye_all( COL );
 }
@@ -26,8 +26,8 @@ Canvas::Canvas(string read_img_name,const int channels){
 	try{
 		C = channels;
 		unsigned char * data = stbi_load(read_img_name.c_str(),&W,&H,&C,channels);	
-		_canvas = col_matr( H, col_vec( W, {255,255,255,255} ) );
-		convert_char_2_colmatr(data);
+		_canvas = color_matr( H, color_vec( W, {255,255,255,255} ) );
+		Converter::uns_chars_to_color_matr( data, _canvas, C );
 		delete [] data;
 	}
 	catch(...){
@@ -133,130 +133,6 @@ bool Canvas::channels_reconstr( int new_C ){
 	return true;
 }
 
-// AUXILIARY CONVERTATION
-
-void Canvas::convert_char_2_colmatr(const unsigned char * data){
-	try{
-		switch( C ){
-
-		case 1:
-			conv_2colmatr_1( data );
-			break;
-		case 2:
-			conv_2colmatr_2( data );
-			break;
-		case 3:
-			conv_2colmatr_3( data );
-			break;
-		case 4:
-			conv_2colmatr_4( data );
-			break;
-		}
-	}
-	catch(...){
-		std::cout << "Couldn't convert char* to color-matrix!\n";
-	}
-}
-
-void Canvas::conv_2colmatr_1( const unsigned char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			int newcol = (int) data[ i*W + j ];
-			_canvas[i][j] = { newcol, newcol, newcol, 255 };
-		}
-}
-
-void Canvas::conv_2colmatr_2( const unsigned char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			int newcol = (int) data[ 2*(i*W + j) ];
-			_canvas[i][j] = { newcol, newcol, newcol,
-						(int) data[ 2*(i*W + j) + 1 ] };
-		}
-}
-
-
-void Canvas::conv_2colmatr_3( const unsigned char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			_canvas[i][j] = { (int) data[ 3*(i*W + j)     ],
-					  (int) data[ 3*(i*W + j) + 1 ],
-					  (int) data[ 3*(i*W + j) + 2 ],
-					  255 }; 
-		}
-}
-
-void Canvas::conv_2colmatr_4( const unsigned char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			_canvas[i][j] = { (int) data[ 4*(i*W + j)     ],
-					  (int) data[ 4*(i*W + j) + 1 ],
-					  (int) data[ 4*(i*W + j) + 2 ],
-					  (int) data[ 4*(i*W + j) + 3 ] };
-		}
-}
-
-
-void Canvas::convert_colmatr_2_char(char * data){
-	
-	try{
-		switch( C ){
-			
-		case 1:
-			conv_2char_1( data );
-			break;
-		case 2:
-			conv_2char_2( data );
-			break;
-		case 3:
-			conv_2char_3( data );
-			break;
-		case 4:
-			conv_2char_4( data );
-			break;
-		}
-	}
-	catch( ... ){
-		std::cout << "Couldn't convert color-matrix to char*!\n";
-	}
-}
-
-
-
-void Canvas::conv_2char_1( char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			data[ i*W + j ] = (char)(_canvas[i][j]).to_bw();
-		}
-}
-
-void Canvas::conv_2char_2( char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			data[ 2*(i*W + j)    ] = (char)(_canvas[i][j]).to_bw();
-			data[ 2*(i*W + j) + 1] = (char)(_canvas[i][j]).alpha;
-		}
-}
-
-void Canvas::conv_2char_3( char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			data[ 3*(i*W + j) + 0 ] = (char)(_canvas[i][j]).r;
-			data[ 3*(i*W + j) + 1 ] = (char)(_canvas[i][j]).g;
-			data[ 3*(i*W + j) + 2 ] = (char)(_canvas[i][j]).b;
-		}
-}
-
-void Canvas::conv_2char_4( char * data ){
-	for(int i=0; i<H; i++)
-		for(int j=0; j<W; j++){
-			data[ 4*(i*W + j) + 0 ] = (char)(_canvas[i][j]).r;
-			data[ 4*(i*W + j) + 1 ] = (char)(_canvas[i][j]).g;
-			data[ 4*(i*W + j) + 2 ] = (char)(_canvas[i][j]).b;
-			data[ 4*(i*W + j) + 3 ] = (char)(_canvas[i][j]).alpha;
-		}
-}
-
 
 
 // OUTPUT
@@ -276,7 +152,7 @@ void Canvas::output(string filename, int channels){
 
 		try{
 			char * data = new char[H*W*C];
-			convert_colmatr_2_char(data);
+			Converter::color_matr_to_chars( _canvas, data, C );
 			stbi_write_png(filename.c_str(),W,H,C,data,W*C);
 			delete [] data;
 		}

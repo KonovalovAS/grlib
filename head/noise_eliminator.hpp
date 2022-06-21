@@ -2,12 +2,11 @@
 #define NOISE_ELIMINATOR_HPP_INCLUDED
 
 #include "canvas.hpp"
-#include <vector>
+#include "typedefs.hpp"
 
+#include <vector>
 using std::vector;
 
-typedef vector<float> f_v;
-typedef vector<f_v> f_matr;
 
 enum eliminator{
 	PERONA_MALIK,
@@ -24,10 +23,10 @@ private:
 	      k,
 	      Time;
 
-	void get_f_matricies(Canvas& img, vector<f_matr>& data);
-	void f_matricies_2_canvas(Canvas& img, const vector<f_matr>& data);
+	void get_float_matricies(Canvas& img, vector<float_matr>& data);
+	void float_matricies_2_canvas(Canvas& img, const vector<float_matr>& data);
 	float core( float x );
-	void Perona_n_Malik(f_matr& data);
+	void Perona_n_Malik(float_matr& data);
 
 public:	
 	Noise_eliminator( float k_ = 10, float delta_t_ = 0.2, float Time_ = 10 );
@@ -37,7 +36,7 @@ public:
 	void set_delta_t( float delta_t_ );
 	void set_Time( float Time_ );
 
-	void operator () (Canvas& img, eliminator ELIMINATOR, apply_to OPT = ALL);
+	void operator () (Canvas& img, apply_to = ALL);
 };
 
 
