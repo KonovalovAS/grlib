@@ -1,16 +1,20 @@
 To do:
 
-0) defining operators for main structures
+-1) implementation of "Writer" and "Converter" classes
+> there might be a need to make a special list of all used types
+
+2) transforming noise_eliminator into more general shape:
+	> separating different eliminators into different classes (with one common ancestor though)
+
+4) defining operators for main structures
 (in particular: canvas, color(s), grObj, pov)
 
-not finished: operator + for colors
+12) matrix operations with pov
 
-1) matrix operations with pov
-
-2) graphic objects
+23) graphic objects
 	+ drawing algorithms
 
-3) coloring methods
+34) coloring methods
 
 
 

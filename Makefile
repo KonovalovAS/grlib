@@ -1,7 +1,7 @@
 o = o_files
 src = src
 
-objects_list = main.o grobj.o canvas.o color.o pov.o noise_eliminator.o
+objects_list = main.o grobj.o canvas.o color.o pov.o noise_eliminator.o converter.o writer.o
 objects = $(addprefix $(o)/,$(objects_list))
 
 all:  prog
@@ -26,6 +26,12 @@ $(o)/pov.o: $(src)/pov.cpp
 
 $(o)/noise_eliminator.o: $(src)/noise_eliminator.cpp
 	g++ -o $(o)/noise_eliminator.o -c $(src)/noise_eliminator.cpp
+
+$(o)/converter.o: $(src)/converter.cpp
+	g++ -o $(o)/converter.o -c $(src)/converter.cpp
+
+$(o)/writer.o: $(src)/writer.cpp
+	g++ -o $(o)/writer.o -c $(src)/writer.cpp
 
 clean:
 	rm $(o)/*.o

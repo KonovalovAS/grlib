@@ -9,6 +9,11 @@ using std::vector;
 typedef vector<float> f_v;
 typedef vector<f_v> f_matr;
 
+enum eliminator{
+	PERONA_MALIK,
+	AVERAGER,
+};
+
 enum apply_to{
 	ALL,
 };
@@ -32,7 +37,7 @@ public:
 	void set_delta_t( float delta_t_ );
 	void set_Time( float Time_ );
 
-	void operator () (Canvas& img, apply_to OPT = ALL);
+	void operator () (Canvas& img, eliminator ELIMINATOR, apply_to OPT = ALL);
 };
 
 

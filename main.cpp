@@ -16,6 +16,5 @@ int main(){
 
 	A.output("folder/noise_after.png",3);
 
-
 	return 0;
 }
