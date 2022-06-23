@@ -3,7 +3,7 @@
 
 #include "color.hpp"
 #include "pov.hpp"
-#include "converter.hpp"
+#include "noise_eliminator.hpp"
 
 #include <vector>
 #include <string>
@@ -58,7 +58,7 @@ public:
 	bool channels_reconstr( int new_C );
 
 
-	friend class Converter;
+	friend class Noise_eliminator;
 
 };
 

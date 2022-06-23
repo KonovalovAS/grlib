@@ -1,4 +1,6 @@
 #include "../head/noise_eliminator.hpp"
+#include "../head/converter.hpp"
+#include "../head/canvas.hpp"
 
 #include <cmath>
 
@@ -26,85 +28,12 @@ void Noise_eliminator::set_Time( float Time_ ){
 	Time = Time_;
 }
 
-void Noise_eliminator::get_float_matricies( Canvas& img, vector<float_matr>& data){
-	
-	// plus one-pixel wide empty (black) border
-	data = vector<float_matr>( img.C, float_matr( img.H+2, float_vec( img.W+2,100 ) ) );
-
-	for(int y=0; y<img.H; y++)
-		for(int x=0; x<img.W; x++){
-			color tmp = img.get_pixel( {x,y} );
-			switch( img.C ){
-			case 1:
-				data[0][y+1][x+1] = (float) tmp.to_bw();
-				break;
-			case 2:
-				data[0][y+1][x+1] = (float) tmp.to_bw();
-				data[1][y+1][x+1] = (float) tmp.alpha;
-				break;
-			case 3:
-				data[0][y+1][x+1] = (float) tmp.r;
-				data[1][y+1][x+1] = (float) tmp.g;
-				data[2][y+1][x+1] = (float) tmp.b;
-				break;
-			case 4:
-				data[0][y+1][x+1] = (float) tmp.r;
-				data[1][y+1][x+1] = (float) tmp.g;
-				data[2][y+1][x+1] = (float) tmp.b;
-				data[3][y+1][x+1] = (float) tmp.alpha;
-				break;
-			}
-		}
-}
-
-void Noise_eliminator::float_matricies_2_canvas(Canvas& img, const vector<float_matr>& data){
-	
-	int C = data.size(),
-	    H = data[0].size()-2,
-	    W = data[0][0].size()-2;
-	
-	for(int y=0; y<H; y++)
-		for(int x=0; x<W; x++){
-			int r,g,b,alpha;
-			
-			switch( C ){
-			case 1:
-				r = std::max( (int)round(data[0][y+1][x+1]), 0 );
-				g = r; b = r;
-				alpha = 255;
-				break;
-			case 2:
-				r = std::max( (int)round(data[0][y+1][x+1]), 0 );
-				g = r; b = r;
-				alpha = std::max( (int)round(data[1][y+1][x+1]), 0 );
-				break;
-			case 3:
-				r = std::max( (int)round(data[0][y+1][x+1]), 0 );
-				g = std::max( (int)round(data[1][y+1][x+1]), 0 );
-				b = std::max( (int)round(data[2][y+1][x+1]), 0 );
-				alpha = 255;
-				break;
-			case 4:
-				r = std::max( (int)round(data[0][y+1][x+1]), 0 );
-				g = std::max( (int)round(data[1][y+1][x+1]), 0 );
-				b = std::max( (int)round(data[2][y+1][x+1]), 0 );
-				alpha = std::max( (int)round(data[3][y+1][x+1]), 0 );
-				break;
-			}
-
-			color newcol = { std::min( 255, r),
-					 std::min( 255, g),
-					 std::min( 255, b),
-					 std::min( 255, alpha) };
-			img.set_pixel( {x,y}, newcol );
-		}
-}
-
 void Noise_eliminator::operator () (Canvas& img, apply_to OPT){
 	
 	
 	vector<float_matr> data;
-	get_float_matricies(img,data);
+	Converter::color_matr_to_float_matr_layers( img._canvas, data, img.C, 1 );
+	std::cout << "Converted successfully!" << std::endl;
 
 	switch( OPT ){
 	case ALL:
@@ -114,13 +43,16 @@ void Noise_eliminator::operator () (Canvas& img, apply_to OPT){
 		break;
 	}
 
-	float_matricies_2_canvas(img,data);
+	Converter::float_matr_layers_to_color_matr( data, img._canvas );
+	std::cout << "Converted back successfully!" << std::endl;
 }
 
 float Noise_eliminator::core( float x ){
 	return 1.0/( 1.0 + pow( x/k, 2 ) );
 }
 
+// I know the way to speed this up by at least 2 times,
+// not done yet
 void Noise_eliminator::Perona_n_Malik(float_matr& data){
 	
 	float n,s,e,w; // north, south, east, west
@@ -133,6 +65,7 @@ void Noise_eliminator::Perona_n_Malik(float_matr& data){
 	while( timer > 0 ){
 		auto buf = data;
 		
+		std::cout << 1 - timer/Time << std::endl;
 		for(int y=1; y<H+1; y++)
 			for(int x=1; x<W+1; x++){
 				n = buf[y-1][x] - buf[y][x];

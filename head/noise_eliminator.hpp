@@ -7,6 +7,7 @@
 #include <vector>
 using std::vector;
 
+class Canvas;
 
 enum eliminator{
 	PERONA_MALIK,
@@ -23,8 +24,6 @@ private:
 	      k,
 	      Time;
 
-	void get_float_matricies(Canvas& img, vector<float_matr>& data);
-	void float_matricies_2_canvas(Canvas& img, const vector<float_matr>& data);
 	float core( float x );
 	void Perona_n_Malik(float_matr& data);
 

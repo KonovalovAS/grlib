@@ -1,4 +1,5 @@
 #include "../head/canvas.hpp"
+#include "../head/converter.hpp"
 
 #define STB_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION

@@ -2,6 +2,7 @@
 #define WRITER_HPP_INCLUDED
 
 #include "converter.hpp" // converter includes canvas and color
+#include "canvas.hpp"
 
 // Eventually this should be a universal writer
 // for all available image formats
